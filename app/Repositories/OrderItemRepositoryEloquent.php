@@ -5,7 +5,7 @@ namespace CodeDelivery\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use CodeDelivery\Repositories\OrderItemRepository;
-use CodeDelivery\Models\OrderItem;
+use CodeDelivery\Models\OrdersItem;
 use CodeDelivery\Validators\OrderItemValidator;
 
 /**
@@ -21,7 +21,7 @@ class OrderItemRepositoryEloquent extends BaseRepository implements OrderItemRep
      */
     public function model()
     {
-        return OrderItem::class;
+        return OrdersItem::class;
     }
 
     
