@@ -47,11 +47,17 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                    <li><a href="{{ route('admin.categories.index') }}">Categorias</a></li>
-                    <li><a href="{{ route('admin.products.index') }}">Produtos</a></li>
-                    <li><a href="{{ route('admin.clients.index') }}">Clientes</a></li>
-                    <li><a href="{{ route('admin.orders.index') }}">Pedidos</a></li>
+                    @if(Auth::user())
+                        @if(Auth::user()->role == 'admin')
+                            <li><a href="{{ url('/home') }}">Home</a></li>
+                            <li><a href="{{ route('admin.categories.index') }}">Categorias</a></li>
+                            <li><a href="{{ route('admin.products.index') }}">Produtos</a></li>
+                            <li><a href="{{ route('admin.clients.index') }}">Clientes</a></li>
+                            <li><a href="{{ route('admin.orders.index') }}">Pedidos</a></li>
+                        @elseif(Auth::user()->role == 'client')
+                            <li><a href="{{ route('customer.order.index') }}">Meus pedidos</a></li>
+                        @endif
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -82,5 +88,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    @yield('post-script')
 </body>
 </html>

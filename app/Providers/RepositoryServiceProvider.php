@@ -6,6 +6,8 @@ use CodeDelivery\Repositories\CategoryRepository;
 use CodeDelivery\Repositories\CategoryRepositoryEloquent;
 use CodeDelivery\Repositories\ClientRepository;
 use CodeDelivery\Repositories\ClientRepositoryEloquent;
+use CodeDelivery\Repositories\CupomRepository;
+use CodeDelivery\Repositories\CupomRepositoryEloquent;
 use CodeDelivery\Repositories\OrderItemRepository;
 use CodeDelivery\Repositories\OrderItemRepositoryEloquent;
 use CodeDelivery\Repositories\OrderRepository;
@@ -48,6 +50,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepository::class,
             UserRepositoryEloquent::class
+        );
+        $this->app->bind(
+            CupomRepository::class,
+            CupomRepositoryEloquent::class
         );
     }
 

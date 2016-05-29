@@ -3,60 +3,44 @@
 namespace CodeDelivery\Http\Controllers;
 
 use CodeDelivery\Http\Requests\AdminClientRequest;
-use CodeDelivery\Repositories\ClientRepository;
 
 use CodeDelivery\Http\Requests;
-use CodeDelivery\Repositories\UserRepository;
+use CodeDelivery\Services\ClientService;
 
 class ClientsController extends Controller
 {
 
     /**
-     * @var ClientRepository
+     * @var ClientService
      */
-    private $repository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private $service;
 
-    public function __construct(ClientRepository $repository, UserRepository $userRepository){
+    public function __construct(ClientService $service){
 
-        $this->repository = $repository;
-        $this->userRepository = $userRepository;
+        $this->service = $service;
     }
 
     public function index(){
-        $clients = $this->repository->paginate(5);
-        return view('admin.clients.index', compact("clients"));
+       return $this->service->index();
     }
 
     public function create(){
-        $users = $this->userRepository->findWhere([['role', '<>', 'admin']])->lists('name', 'id');
-        return view('admin.clients.create', compact("users"));
+        return $this->service->create();
     }
 
     public function store(AdminClientRequest $request){
-        $data = $request->all();
-        $this->repository->create($data);
-
-        return redirect()->route('admin.clients.index');
+        return $this->service->store($request);
     }
 
     public function edit($id){
-        $client = $this->repository->find($id);
-        $users = $this->userRepository->findWhere([['role', '<>', 'admin']])->lists('name', 'id');
-        return view('admin.clients.edit', compact("client", "users"));
+        return $this->service->edit($id);
     }
 
     public function update(AdminClientRequest $request, $id){
-        $data = $request->all();
-        $this->repository->update($data, $id);
-        return redirect()->route('admin.clients.index');
+        return $this->service->update($request->all(), $id);
     }
 
     public function destroy($id){
-        $this->repository->delete($id);
-        return redirect()->route('admin.clients.index');
+        return $this->service->destroy($id);
     }
 }

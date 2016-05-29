@@ -25,6 +25,14 @@ class OrderTableSeeder extends Seeder
             $ordersItem = new OrdersItem($data);
             $o->items()->save($ordersItem);
             $o->total = $product->price;
+            switch($o->id){
+                case 1:
+                    $o->client_id = 1;
+                    break;
+                case 2:
+                    $o->client_id = 2;
+                    break;
+            }
             $o->save();
         });
     }
