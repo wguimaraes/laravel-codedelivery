@@ -169,7 +169,12 @@ return [
          * Collective provider
          */
         Collective\Html\HtmlServiceProvider::class,
-
+    		
+    	/*
+    	 * OAuth2 providers
+    	 */
+    	LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider::class,
+    	LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider::class,
 
     ],
 
@@ -221,6 +226,10 @@ return [
          */
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+    	/*
+    	 * OAuth2 Aliases
+    	 */
+    	'Authorizer' => LucaDegasperi\OAuth2Server\Facades\Authorizer::class,
 
     ],
 

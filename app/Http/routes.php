@@ -22,7 +22,11 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' => 'admin.'], function(){
+Route::post('oauth/access_token', function() {
+	return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth.checkrole:admin', 'csrf'], 'as' => 'admin.'], function(){
     Route::get('/categories', ['as' => 'categories.index', 'uses' => 'CategoriesController@index']);
     Route::get('/categories/create', ['as' => 'categories.create', 'uses' => 'CategoriesController@create']);
     Route::get('/categories/edit/{id}', ['as' => 'categories.edit', 'uses' => 'CategoriesController@edit']);
@@ -58,10 +62,30 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' 
     Route::get('/cupoms/destroy/{id}', ['as' => 'cupoms.destroy', 'uses' => 'CupomsController@destroy']);
 });
 
-Route::group(['prefix' => 'customer', 'middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function(){
+Route::group(['prefix' => 'customer', 'middleware' => ['auth.checkrole:client', 'csrf'], 'as' => 'customer.'], function(){
 
     Route::get('order', ['as' => 'order.index', 'uses' => 'CheckoutController@index']);
     Route::get('order/create', ['as' => 'order.create', 'uses' => 'CheckoutController@create']);
     Route::post('order/store', ['as' => 'order.store', 'uses' => 'CheckoutController@store']);
+
+});
+
+Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function(){
+	
+	Route::group(['prefix' => 'cliente', 'as' => 'client.'], function(){
+		Route::get('pedidos', function(){
+			return ['id' => 1, 'client' => 'William Guimarães', 'message' => 'An error occurred on searching project file .'];
+		});
+	});
+	
+	Route::group(['prefix' => 'deliveryman', 'as' => 'deliveryman.'], function(){
+		Route::get('pedidos', function(){
+			return [
+					'id' => 1,
+					'client' => 'William Guimar�es',
+					'total' => 10
+			];
+		});
+	});
 
 });
