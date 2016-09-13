@@ -54,9 +54,10 @@ class Kernel extends HttpKernel
         'guest' => \CodeDelivery\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.checkrole' => \CodeDelivery\Http\Middleware\CheckRole::class,
+    	'oauth.checkrole' => \CodeDelivery\Http\Middleware\OAuthCheckRole::class,
     		
     	/*
-    	 * Realocação
+    	 * Realocaï¿½ï¿½o
     	 */
     	'csrf' => \CodeDelivery\Http\Middleware\VerifyCsrfToken::class,
     		

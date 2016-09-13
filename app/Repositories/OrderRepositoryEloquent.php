@@ -14,6 +14,23 @@ use CodeDelivery\Validators\OrderValidator;
  */
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
+	
+	public function getByIdAndDeliveryMan($id, $deliveryManId){
+		$order = $this->with([
+				'client',
+				'items',
+				'delivaryMan', 
+				'cupom'])->findWhere([
+						'id' => $id, 
+						'deliveryman_id' => $deliveryManId])->first();
+		if($order){
+			$order->items->each(function($item){
+				$item->product;
+			});
+		}
+		return $order;
+	}
+	
     /**
      * Specify Model class name
      *

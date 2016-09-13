@@ -71,10 +71,22 @@ class OrderService
             }
             $order->save();
             \DB::commit();
+            return $order;
         }catch(\Exception $e){
             \DB::rollback();
             throw $e;
         }
+    }
+    
+    public function updateStatus($id, $deliveryManId, $status){
+    	$order = $this->orderRepository->getByIdAndDeliveryMan($id, $deliveryManId);
+    	if($order){
+    		$order->status = $status;
+    		$order->save();
+    		return $order;
+    	}
+    	 
+    	return false;
     }
 
 }

@@ -8,7 +8,6 @@ use CodeDelivery\Repositories\UserRepository;
 use CodeDelivery\Services\OrderService;
 use Illuminate\Http\Request;
 
-use CodeDelivery\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
