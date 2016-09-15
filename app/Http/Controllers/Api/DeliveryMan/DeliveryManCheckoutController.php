@@ -27,6 +27,9 @@ class DeliveryManCheckoutController extends Controller
     private $service;
     
     private $userId;
+    
+    private $withList = ['items'];
+    private $withShow = ['client','items','deliveryMan', 'cupom'];
 
     public function __construct(
         OrderRepository $repository, UserRepository $userRepository,
@@ -41,7 +44,9 @@ class DeliveryManCheckoutController extends Controller
 
     public function index(){
     	$userId = $this->userId;
-        $orders = $this->repository->with('items')->scopeQuery(function($query) use($userId){
+        $orders = $this->repository->skipPresenter(false)
+        			   ->with($this->withList)
+        			   ->scopeQuery(function($query) use($userId){
             return $query->where('deliveryman_id', '=', $userId);
         })->all();
 
@@ -49,7 +54,7 @@ class DeliveryManCheckoutController extends Controller
     }
     
     public function show($id){
-    	return $this->repository->getByIdAndDeliveryMan($id, $this->userId);
+    	return $this->repository->skipPresenter(false)->getByIdAndDeliveryMan($id, $this->userId);
     }
     
     public function updateStatus(Request $request, $id){

@@ -15,19 +15,25 @@ use CodeDelivery\Validators\OrderValidator;
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
 	
+	protected $skipPresenter = true;
+	
 	public function getByIdAndDeliveryMan($id, $deliveryManId){
-		$order = $this->with([
+		$result = $this->with([
 				'client',
 				'items',
-				'delivaryMan', 
+				'deliveryMan', 
 				'cupom'])->findWhere([
 						'id' => $id, 
-						'deliveryman_id' => $deliveryManId])->first();
-		if($order){
-			$order->items->each(function($item){
-				$item->product;
-			});
+						'deliveryman_id' => $deliveryManId]);
+		$order = null;
+		if($result instanceof Collection){
+			$order = $result->first();
+		}else{
+			if(isset($result['data']) && sizeof($result['data']) > 0){
+				$order = ['data' => $result['data'][0]];
+			}
 		}
+		
 		return $order;
 	}
 	
@@ -49,5 +55,9 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+    
+    public function presenter(){
+    	return \CodeDelivery\Presenters\OrderPresenter::class;
     }
 }

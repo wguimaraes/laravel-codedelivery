@@ -44,8 +44,12 @@ class OrderService
     }
 
     public function create(array $data){
+    	
         \DB::beginTransaction();
         try {
+        	if(isset($data['cupom_id'])){
+        		unset($data['cupom_id']);
+        	}
             if (isset($data['cupom_code'])) {
                 $cupom = $this->cupomRepository->findByField('code', $data['cupom_code'])->first();
                 $data['cupom_id'] = $cupom->id;
