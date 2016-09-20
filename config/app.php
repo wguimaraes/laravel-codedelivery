@@ -157,6 +157,11 @@ return [
          * Provider's próprios
          */
         CodeDelivery\Providers\RepositoryServiceProvider::class,
+    		
+    	/*
+    	 * CORS
+    	 */
+    	Barryvdh\Cors\ServiceProvider::class,
 
         /*
          * Application Service Providers...
