@@ -17,6 +17,6 @@ function($scope, $state, $ionicLoading, Product, $localStorage, $cart){
 	$scope.addItem = function(item){
 		item.qtd = 1;
 		$cart.addItem(item);
-		$state.go('client.checkout',{},{reload: true});
+		$state.go('client.checkout');
 	}
 }])

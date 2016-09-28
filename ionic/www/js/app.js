@@ -27,8 +27,9 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
     }
   });
 })
-.config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
-         function($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig){
+.config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
+         function($ionicConfigProvider, $stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig){
+			$ionicConfigProvider.views.maxCache(0);
 			OAuthProvider.configure({
 		      baseUrl: appConfig.baseUrl,
 		      clientId: 'appid1',
@@ -69,6 +70,11 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					url: '/checkout/details/:index',
 					templateUrl: 'templates/client/checkout_detail.html',
 					controller: 'ClientCheckoutDetailCtrl'
+				})
+				.state('client.checkout_successful', {
+					url: '/checkout/successful',
+					templateUrl: 'templates/client/checkout_successful.html',
+					controller: 'ClientCheckoutSuccessfullCtrl'
 				})
 				.state('client.view_products', {
 					url: '/view/products',
