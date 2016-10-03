@@ -42,6 +42,8 @@ Route::group(['middleware' => 'cors'], function(){
 					'uses' => "Api\DeliveryMan\DeliveryManCheckoutController@updateStatus"
 			]);
 		});
+		
+		Route::get('cupom/{code}', 'Api\CupomController@show');
 	
 	});
 	
