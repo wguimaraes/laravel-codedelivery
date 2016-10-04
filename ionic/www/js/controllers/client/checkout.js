@@ -5,12 +5,12 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order
 	var cart = $cart.get();
 	$scope.cupom = cart.cupom;
 	$scope.items = cart.items;
-	$scope.total = cart.total;
+	$scope.total = $cart.getTotalFinal();
 	
 	$scope.removeItem = function(index){
 		$cart.removeItem(index);
 		$scope.items.splice(index, 1);
-		$scope.total = $cart.get().total;
+		$scope.total = $cart.getTotalFinal();
 	};
 	
 	$scope.openProductDetail = function(i){
@@ -22,29 +22,34 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order
 	}
 	
 	$scope.save = function(){
-		var items = angular.copy($scope.items);
+		var o = {items: angular.copy($scope.items)};
 		
-		angular.forEach(items, function(item){
+		angular.forEach(o.items, function(item){
 			item.product_id = item.id;
 		});
 		$ionicLoading.show({
 			template: 'Salvando pedido...'
 		});
-		Order.save({id: null}, {items: items}, function(data){
+		
+		if($scope.cupom.value){
+			o.cupom_code = $scope.cupom.code;
+		}
+		
+		Order.save({id: null}, o, function(data){
 			$ionicLoading.hide();
 			$state.go('client.checkout_successful');
 		}, function(responseError){
 			$ionicLoading.hide();
 			$ionicPopup.alert({
-				title: 'Advertência',
-				template: 'Erro, pedido não realizado.'
+				title: 'AdvertÃªncia',
+				template: 'Erro, pedido nÃ£o realizado.'
 			});
 		});
 		
 	};
 	
 	$scope.readBarCode = function(){
-		getValueCupom(6679);
+		getValueCupom(1589);
 	};
 	
 	$scope.removeCupom = function(){
@@ -65,8 +70,8 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order
 		},function(responseError){
 			$ionicLoading.hide();
 			$ionicPopup.alert({
-				title: 'Advertência',
-				template: 'Cupom não encontrado.'
+				title: 'AdvertÃªncia',
+				template: 'Cupom nÃ£o encontrado.'
 			});
 		});
 	};

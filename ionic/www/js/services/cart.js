@@ -22,7 +22,7 @@ angular.module('starter.services')
 		for(var index in cart.items){
 			itemAux = cart.items[index];
 			if(itemAux.id == item.id){
-				itemAux.qtd += item.qtd;
+				itemAux.qtd = parseInt(itemAux.qtd) + item.qtd;
 				itemAux.subtotal = calculateSubTotal(itemAux);
 				exists = true;
 				break;
