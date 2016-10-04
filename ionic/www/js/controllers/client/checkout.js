@@ -1,8 +1,9 @@
 angular.module('starter.controllers')
 .controller('ClientCheckoutCtrl', 
-['$scope', '$state', '$localStorage', '$cart', '$ionicLoading', '$ionicPopup', 'Order',
-function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order){
+['$scope', '$state', '$localStorage', '$cart', '$ionicLoading', '$ionicPopup', 'Order', 'Cupom',
+function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order, Cupom){
 	var cart = $cart.get();
+	$scope.cupom = cart.cupom;
 	$scope.items = cart.items;
 	$scope.total = cart.total;
 	
@@ -35,11 +36,39 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, Order
 		}, function(responseError){
 			$ionicLoading.hide();
 			$ionicPopup.alert({
-				title: 'AdvertÃªncia',
-				template: 'Erro, pedido nÃ£o realizado.'
+				title: 'Advertência',
+				template: 'Erro, pedido não realizado.'
 			});
 		});
 		
-	}
+	};
+	
+	$scope.readBarCode = function(){
+		getValueCupom(6679);
+	};
+	
+	$scope.removeCupom = function(){
+		$cart.removeCupom();
+		$scope.cupom = $cart.get().cupom;
+		$scope.total = $cart.getTotalFinal();
+	};
+	
+	function getValueCupom(code){
+		$ionicLoading.show({
+			template: 'Carregando...'
+		});
+		var cupom = Cupom.get({code: code},function(data){
+			$ionicLoading.hide();
+			$cart.setCupom(data.data.code, data.data.value);
+			$scope.cupom = $cart.get().cupom;
+			$scope.total = $cart.getTotalFinal();
+		},function(responseError){
+			$ionicLoading.hide();
+			$ionicPopup.alert({
+				title: 'Advertência',
+				template: 'Cupom não encontrado.'
+			});
+		});
+	};
 	
 }])
