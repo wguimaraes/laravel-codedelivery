@@ -7,13 +7,17 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use CodeDelivery\Repositories\CupomRepository;
 use CodeDelivery\Models\Cupom;
 use CodeDelivery\Validators\CupomValidator;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use CodeDelivery\Presenters\CupomPresenter;
 /**
  * Class CupomRepositoryEloquent
  * @package namespace CodeDelivery\Repositories;
  */
 class CupomRepositoryEloquent extends BaseRepository implements CupomRepository
 {
+	
+	protected $skipPresenter = true;
+	
     /**
      * Specify Model class name
      *
@@ -24,13 +28,25 @@ class CupomRepositoryEloquent extends BaseRepository implements CupomRepository
         return Cupom::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+    
+    public function presenter(){
+    	return CupomPresenter::class;
+    }
+    
+    public function findByCode($code){
+    	$cupom = $this->model->where('code', $code)
+    		->where('used', 0)
+    		->first();
+    	if($cupom){
+    		return $this->parserResult($cupom);
+    	}
+    	throw (new ModelNotFoundException)->setModel(get_class($this->model));
     }
 }
