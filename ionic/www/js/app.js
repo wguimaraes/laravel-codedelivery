@@ -8,7 +8,7 @@ angular.module('starter.services', []);
 
 angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers', 'starter.services'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.1.102:8000'
+	baseUrl: 'http://192.168.128.156:8000'
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -27,8 +27,8 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
     }
   });
 })
-.config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
-         function($ionicConfigProvider, $stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig){
+.config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig', '$provide',
+         function($ionicConfigProvider, $stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig, $provide){
 			$ionicConfigProvider.views.maxCache(0);
 			OAuthProvider.configure({
 		      baseUrl: appConfig.baseUrl,
@@ -81,5 +81,36 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					templateUrl: 'templates/client/view_products.html',
 					controller: 'ClientViewProductsCtrl'
 				})
-			//$urlRouterProvider.otherwise('/');
+			$urlRouterProvider.otherwise('/login');
+			
+			$provide.decorator('OAuthToken', ['$localStorage', '$delegate', function($localStorage, $delegate){
+				Object.defineProperties($delegate, {
+					setToken: {
+						value: function(data){
+							return $localStorage.setObject('token', data);
+						},
+						enumerable:true,
+						configurable: true,
+						writable: true
+					},
+					getToken: {
+						value: function(){
+							return $localStorage.getObject('token');
+						},
+						enumerable:true,
+						configurable: true,
+						writable: true
+					},
+					removeToken: {
+						value: function(){
+							return $localStorage.setObject('token', null);
+						},
+						enumerable:true,
+						configurable: true,
+						writable: true
+					},
+				});
+				return $delegate;
+			}]);
+			
 		}])
