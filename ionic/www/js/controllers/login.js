@@ -11,7 +11,7 @@ function($scope, OAuth, $state, $ionicPopup){
 		OAuth.getAccessToken($scope.user)
 		.then(
 			function(data){
-				$state.go('home');
+				$state.go('client.view_products');
 			},
 			function(responseError){
 				$ionicPopup.alert({
