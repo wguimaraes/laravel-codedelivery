@@ -11,6 +11,8 @@ use CodeDelivery\Models\User;
  */
 class UserTransformer extends TransformerAbstract
 {
+	
+	protected $availableIncludes = ['client'];
 
     /**
      * Transform the \User entity
@@ -23,11 +25,17 @@ class UserTransformer extends TransformerAbstract
         return [
             'id'			=> (int) $model->id,
         	'name'			=> $model->name,
+        	'email'			=> $model->email,
+        	'role'			=> $model->role,
 
             /* place your other model properties here */
 
             'created_at'	=> $model->created_at,
             'updated_at'	=> $model->updated_at
         ];
+    }
+    
+    public function includeClient(User $model){
+    	return $this->item($model->client, new ClientTransformer());
     }
 }
