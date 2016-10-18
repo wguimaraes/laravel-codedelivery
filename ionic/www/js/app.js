@@ -8,7 +8,7 @@ angular.module('starter.services', []);
 
 angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers', 'starter.services', 'ngCordova'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.1.102:8000'
+	baseUrl: 'http://192.168.128.156:8000'
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

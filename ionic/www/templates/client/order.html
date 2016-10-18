@@ -5,10 +5,12 @@
 			<ion-item ng-repeat="o in items">
 				<div class="row">
 					<div class="col">
-						Teste {{$index}}
+						<h2>{{o.created_at.date|limitTo: 10|date: 'dd/mm/yyyy'}}</h2>
+						<p>{{o.product_names|limitTo: 2}}</p>
+						<i class="ion ion-ios-cart">{{o.product_names.length}}</i>
 					</div>
-					<div class="col">
-						Teste {{$index}}
+					<div class="col text-right">
+						<i class="ion ion-social-usd">{{o.total}}</i>
 					</div>
 				</div>
 			</ion-item>
