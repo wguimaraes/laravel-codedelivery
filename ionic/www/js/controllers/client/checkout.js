@@ -1,10 +1,15 @@
 angular.module('starter.controllers')
 .controller('ClientCheckoutCtrl', 
 ['$scope', '$state', '$localStorage', '$cart', '$ionicLoading', '$ionicPopup', '$cordovaBarcodeScanner',
- 'Order', 'Cupom',
+ 'Order', 'Cupom', 'User',
 function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, $cordovaBarcodeScanner,
-		 Order, Cupom){
+		 Order, Cupom, User){
 	var cart = $cart.get();
+	User.authenticated({include: 'client'}, function(data){
+		console.log(data);
+	}, function(errorResponse){
+		console.log('Errou no User');
+	});
 	$scope.cupom = cart.cupom;
 	$scope.items = cart.items;
 	$scope.total = $cart.getTotalFinal();

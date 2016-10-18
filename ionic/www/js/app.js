@@ -61,12 +61,18 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 			.state('client',{
 				abstract: true,
 				url: '/client',
-				template: '<ion-nav-view/>'
+				templateUrl: 'templates/client/menu.html',
+				controller: 'ClientMenuCtrl'
 			})
 				.state('client.checkout', {
 					url: '/checkout',
 					templateUrl: 'templates/client/checkout.html',
 					controller: 'ClientCheckoutCtrl'
+				})
+				.state('client.order', {
+					url: '/order',
+					templateUrl: 'templates/client/order.html',
+					controller: 'ClientOrderCtrl'
 				})
 				.state('client.checkout_detail', {
 					url: '/checkout/details/:index',
