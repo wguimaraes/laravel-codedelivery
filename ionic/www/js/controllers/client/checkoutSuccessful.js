@@ -10,6 +10,6 @@ function($scope, $state, $cart){
 	$cart.clear();
 	
 	$scope.openListOrder = function(){
-		return false;
+		$state.go('client.order');
 	};
 }])

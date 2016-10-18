@@ -5,10 +5,12 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter.controllers', []);
 angular.module('starter.services', []);
+angular.module('starter.filters', []);
 
-angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers',
+                           'starter.services', 'ngCordova', 'starter.filters'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.128.156:8000'
+	baseUrl: 'http://192.168.1.102:8000'
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -73,6 +75,11 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					url: '/order',
 					templateUrl: 'templates/client/order.html',
 					controller: 'ClientOrderCtrl'
+				})
+				.state('client.view_order', {
+					url: '/view_order/:id',
+					templateUrl: 'templates/client/view_order.html',
+					controller: 'ClientViewOrderCtrl'
 				})
 				.state('client.checkout_detail', {
 					url: '/checkout/details/:index',
