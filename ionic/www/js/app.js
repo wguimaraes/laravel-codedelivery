@@ -10,7 +10,7 @@ angular.module('starter.filters', []);
 angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers',
                            'starter.services', 'ngCordova', 'starter.filters'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.1.102:8000'
+	baseUrl: 'http://192.168.128.156:8000'
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -95,6 +95,22 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					url: '/view/products',
 					templateUrl: 'templates/client/view_products.html',
 					controller: 'ClientViewProductsCtrl'
+				})
+			.state('deliveryman', {
+				abstract: true,
+				url: '/deliveryman',
+				templateUrl: 'templates/deliveryman/menu.html',
+				controller: 'DeliveryManMenuCtrl'
+			})
+				.state('deliveryman.order', {
+					url: '/order',
+					templateUrl: 'templates/deliveryman/order.html',
+					controller: 'DeliveryManOrderCtrl'
+				})
+				.state('deliveryman.view_order', {
+					url: '/checkout/successful',
+					templateUrl: 'templates/deliveryman/view_order.html',
+					controller: 'DeliveryManViewOrderCtrl'
 				})
 			$urlRouterProvider.otherwise('/login');
 			
