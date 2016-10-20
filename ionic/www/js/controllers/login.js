@@ -16,7 +16,11 @@ function($scope, OAuth, OAuthToken, $state, $ionicPopup, UserData, User){
 			})
 			.then(function(data){
 				UserData.set(data.data);
-				$state.go('client.view_products');
+				if(UserData.get().role == 'deliveryman'){
+					$state.go('deliveryman.order');
+				}else{
+					$state.go('client.view_products');
+				}
 			}, function(responseError){
 				UserData.set(null);
 				OAuthToken.removeToken();

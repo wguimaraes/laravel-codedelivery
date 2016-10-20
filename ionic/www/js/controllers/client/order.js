@@ -1,9 +1,9 @@
 angular.module('starter.controllers')
 .controller('ClientOrderCtrl', 
 ['$scope', '$state', '$localStorage', '$cart', '$ionicLoading', '$ionicPopup',
- 'Order', 'Cupom', 'User',
+ 'ClientOrder', 'Cupom', 'User',
 function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup,
-		 Order, Cupom, User){
+		ClientOrder, Cupom, User){
 	$scope.items = [];
 	$ionicLoading.show({
 		template: 'Carregando...'
@@ -23,7 +23,7 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup,
 	};
 	
 	function getOrders(){
-		return Order.query({
+		return ClientOrder.query({
 				id: null,
 				orderBy: 'created_at',
 				sortedBy: 'desc'

@@ -10,7 +10,7 @@ angular.module('starter.filters', []);
 angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers',
                            'starter.services', 'ngCordova', 'starter.filters'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.128.156:8000'
+	baseUrl: 'http://192.168.1.102:8000'
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -108,7 +108,7 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					controller: 'DeliveryManOrderCtrl'
 				})
 				.state('deliveryman.view_order', {
-					url: '/checkout/successful',
+					url: '/view_order/:id',
 					templateUrl: 'templates/deliveryman/view_order.html',
 					controller: 'DeliveryManViewOrderCtrl'
 				})
