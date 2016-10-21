@@ -8,11 +8,14 @@ angular.module('starter.services', []);
 angular.module('starter.filters', []);
 
 angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers',
-                           'starter.services', 'ngCordova', 'starter.filters'])
+                           'starter.services', 'ngCordova', 'starter.filters', 'uiGmapgoogle-maps',
+                           'pusher-angular'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.1.102:8000'
+	baseUrl: 'http://192.168.1.102:8000',
+	pusherKey: '5dbe347d07d599a21b3a'
 })
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $window, appConfig) {
+  $window.client = new Pusher(appConfig.pusherKey);
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -80,6 +83,11 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					url: '/view_order/:id',
 					templateUrl: 'templates/client/view_order.html',
 					controller: 'ClientViewOrderCtrl'
+				})
+				.state('client.view_delivery', {
+					url: '/view_delivery/:id',
+					templateUrl: 'templates/client/view_delivery.html',
+					controller: 'ClientViewDeliveryCtrl'
 				})
 				.state('client.checkout_detail', {
 					url: '/checkout/details/:index',
