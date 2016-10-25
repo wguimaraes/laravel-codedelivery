@@ -9,7 +9,7 @@ use CodeDelivery\Models\OrdersItem;
  * Class OrderItemTransformer
  * @package namespace CodeDelivery\Transformers;
  */
-class OrdersItemTransformer extends TransformerAbstract
+class OrderItemTransformer extends TransformerAbstract
 {
 
 	protected $defaultIncludes = ['product'];

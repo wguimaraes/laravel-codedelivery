@@ -44,7 +44,7 @@ class OrderTransformer extends TransformerAbstract
     }
     
     public function includeItems(Order $model){
-    	return $this->collection($model->items, new OrdersItemTransformer());
+    	return $this->collection($model->items, new OrderItemTransformer());
     }
     public function includeDeliveryMan(Order $model){
     	if(!$model->deliveryMan){
