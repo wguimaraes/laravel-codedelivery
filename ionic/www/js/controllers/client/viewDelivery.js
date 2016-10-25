@@ -1,7 +1,9 @@
 angular.module('starter.controllers')
 .controller('ClientViewDeliveryCtrl', 
 ['$scope', '$stateParams', '$ionicLoading', 'ClientOrder', '$localStorage', '$ionicPopup', 'UserData',
-function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionicPopup, UserData){
+ '$pusher', '$window',
+function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionicPopup, UserData,
+		 $pusher, $window){
 	$scope.order = {};
 	$scope.map = {
 		center: {
@@ -17,7 +19,7 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 	ClientOrder.get({id: $stateParams.id, include: 'items,cupom'}, function(data){
 		$scope.order = data.data;
 		if($scope.order.status == 1){
-			initMarkers();
+			initMarkers($scope.order);
 		}else{
 			$ionicPopup.alert({
 				title: 'Advertência',
@@ -30,11 +32,12 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 		$ionicLoading.hide();
 	});
 	
-	function initMarkers(){
+	function initMarkers(order){
 		var client = UserData.get('user').client.data;
 		var address = client.zipcode + ', ' + client.address + ', ' + 
 					  client.city + ' - ' + client.state;
 		createMarkerClient(address);
+		watchPositionDeliveryMan(order.hash);
 	};
 	function createMarkerClient(address){
 		var geoCoder = new google.maps.Geocoder();
@@ -65,5 +68,14 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 			});
 		
 	};
+	
+	function watchPositionDeliveryMan(channel){
+		var pusher = $pusher($window.client),
+			channel = pusher.subscribe(channel);
+		var handler = function(data){
+			console.log(data);
+		};
+		channel.bind('CodeDelivery\\Events\\GetLocationDeliveryMan', handler);
+	}
 	
 }])
