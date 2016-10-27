@@ -1,5 +1,5 @@
 angular.module('starter.controllers')
-.controller('DeliveryManViewOrderCtrl', 
+.controller('DeliveryManViewOrderCtrl',
 ['$scope', '$stateParams', '$ionicLoading', 'DeliveryManOrder', '$localStorage', '$cordovaGeolocation',
  '$ionicPopup',
 function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $cordovaGeolocation,
@@ -16,7 +16,7 @@ function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $
 	function(){
 		$ionicLoading.hide();
 	});
-	
+
 	$scope.goToDelivery = function(){
 		$ionicPopup.alert({
 			title: 'Aviso',
@@ -28,7 +28,7 @@ function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $
 			var watchOptions = {
 					timeOut: 3000,
 					enableHighAccuracy: false,
-					
+
 			};
 			watch = $cordovaGeolocation.watchPosition(watchOptions);
 			watch
@@ -40,7 +40,7 @@ function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $
 							lat = position.coords.latitude;
 							long = position.coords.longitude;
 						}else{
-							lat -= 0.0001;
+							lat -= 0.0004;
 						}
 						DeliveryManOrder.geo({id: $stateParams.id},{
 							lat: lat,
@@ -51,7 +51,7 @@ function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $
 			console.log('Errou!');
 		});
 	}
-	
+
 	function stopWatchPostion(){
 		if(watch && typeof watch == 'object' && watch.hasOwnProperty('watchID')){
 			$cordovaGeolocation.clearWatch(watch.watchID);

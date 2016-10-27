@@ -1,17 +1,11 @@
 angular.module('starter.controllers')
-.controller('ClientViewDeliveryCtrl', 
+.controller('ClientViewDeliveryCtrl',
 ['$scope', '$stateParams', '$ionicLoading', 'ClientOrder', '$localStorage', '$ionicPopup', 'UserData',
- '$pusher', '$window',
+ '$pusher', '$window', '$map',
 function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionicPopup, UserData,
-		 $pusher, $window){
+		 $pusher, $window, $map){
 	$scope.order = {};
-	$scope.map = {
-		center: {
-			latitude: 0,
-			longitude: 0
-		},
-		zoom: 16
-	};
+	$scope.map = $map;
 	$scope.markers = [];
 	$ionicLoading.show({
 		template: 'Carregando...'
@@ -31,16 +25,16 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 	function(){
 		$ionicLoading.hide();
 	});
-	
+
 	$scope.$watch('markers.length', function(value){
 		if(value == 2){
 			createBounds();
 		}
 	});
-	
+
 	function initMarkers(order){
 		var client = UserData.get('user').client.data;
-		var address = client.zipcode + ', ' + client.address + ', ' + 
+		var address = client.zipcode + ', ' + client.address + ', ' +
 					  client.city + ' - ' + client.state;
 		createMarkerClient(address);
 		watchPositionDeliveryMan(order.hash);
@@ -72,9 +66,9 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 					});
 				}
 			});
-		
+
 	};
-	
+
 	function watchPositionDeliveryMan(channel){
 		var pusher = $pusher($window.client),
 			channel = pusher.subscribe(channel);
@@ -95,7 +89,7 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 				});
 				return;
 			}
-			
+
 			for(var key in $scope.markers){
 				if($scope.markers[key].id == 'entregador'){
 					$scope.markers[key].coords = {
@@ -107,7 +101,7 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 		};
 		channel.bind('CodeDelivery\\Events\\GetLocationDeliveryMan', handler);
 	};
-	
+
 	function createBounds(){
 		var bounds = new google.maps.LatLngBounds(),
 			latlng;
@@ -126,5 +120,18 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionic
 			}
 		};
 	}
-	
+
+}])
+.controller('CvdControlDescentralize', ['$scope', '$map', function($scope, $map){
+  $scope.map = $map;
+  $scope.fit = function(){
+    $scope.map.fit = !$scope.map.fit;
+  }
+}])
+.controller('CvdControlReload', ['$scope', '$window', '$timeout', function($scope, $window, $timeout){
+  $scope.reload = function(){
+    $timeout(function () {
+      $window.location.reload(true);
+    }, 100);
+  }
 }])

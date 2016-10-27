@@ -1,5 +1,5 @@
 angular.module('starter.controllers')
-.controller('ClientViewOrderCtrl', 
+.controller('ClientViewOrderCtrl',
 ['$scope', '$stateParams', '$ionicLoading', 'ClientOrder', '$localStorage',
 function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage){
 	$scope.order = {};
@@ -13,5 +13,5 @@ function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage){
 	function(){
 		$ionicLoading.hide();
 	});
-	
+
 }])

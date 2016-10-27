@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
                            'starter.services', 'ngCordova', 'starter.filters', 'uiGmapgoogle-maps',
                            'pusher-angular'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.1.103:8000',
+	baseUrl: 'http://192.168.128.156:8000',
 	pusherKey: '5dbe347d07d599a21b3a'
 })
 .run(function($ionicPlatform, $window, appConfig) {
@@ -49,7 +49,7 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 				    secure: false
 				  }
 			});
-			
+
 			$stateProvider
 			.state('login',{
 				url: '/login',
@@ -60,7 +60,7 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 				url: '/home',
 				templateUrl: 'templates/home.html',
 				controller: function($scope){
-					
+
 				}
 			})
 			.state('client',{
@@ -121,7 +121,7 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 					controller: 'DeliveryManViewOrderCtrl'
 				})
 			$urlRouterProvider.otherwise('/login');
-			
+
 			$provide.decorator('OAuthToken', ['$localStorage', '$delegate', function($localStorage, $delegate){
 				Object.defineProperties($delegate, {
 					setToken: {
@@ -151,5 +151,5 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
 				});
 				return $delegate;
 			}]);
-			
+
 		}])
