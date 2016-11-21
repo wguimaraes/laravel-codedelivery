@@ -24,4 +24,8 @@ class UserController extends Controller
 		return $this->repository->skipPresenter(false)->find($this->userId);
 	}
 	
+	public function updateDeviceToken(Request $request){
+	    $deviceToken = $request->get('device_token');
+	    return $this->repository->updateDeviceToken($this->userId, $deviceToken);
+	}
 }
