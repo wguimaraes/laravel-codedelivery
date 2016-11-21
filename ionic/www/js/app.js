@@ -7,11 +7,11 @@ angular.module('starter.controllers', []);
 angular.module('starter.services', []);
 angular.module('starter.filters', []);
 
-angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.controllers',
+angular.module('starter', ['ionic', 'ionic.cloud', 'angular-oauth2', 'ngResource', 'starter.controllers',
                            'starter.services', 'ngCordova', 'starter.filters', 'uiGmapgoogle-maps',
                            'pusher-angular'])
 .constant('appConfig', {
-	baseUrl: 'http://192.168.128.156:8000',
+	baseUrl: 'http://192.168.1.103:8000',
 	pusherKey: '5dbe347d07d599a21b3a'
 })
 .run(function($ionicPlatform, $window, appConfig) {
@@ -33,123 +33,138 @@ angular.module('starter', ['ionic', 'angular-oauth2', 'ngResource', 'starter.con
   });
 })
 .config(['$ionicConfigProvider', '$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider',
-         'appConfig', '$provide',
+         'appConfig', '$provide', '$ionicCloudProvider',
          function($ionicConfigProvider, $stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider,
-        		  appConfig, $provide){
-			$ionicConfigProvider.views.maxCache(0);
-			OAuthProvider.configure({
+        	  appConfig, $provide, $ionicCloudProvider){
+		  $ionicConfigProvider.views.maxCache(0);
+		  OAuthProvider.configure({
 		      baseUrl: appConfig.baseUrl,
 		      clientId: 'appid1',
 		      clientSecret: 'secret', // optional
 		      grantPath: '/oauth/access_token'
-		    });
-			OAuthTokenProvider.configure({
-				  name: 'token',
-				  options: {
-				    secure: false
-				  }
-			});
+		  });
+		  OAuthTokenProvider.configure({
+		      name: 'token',
+		      options: {
+			    secure: false
+		      }
+		  });
+		  
+		  $ionicCloudProvider.init({
+		  	"core": {
+		  	    "app_id": "ea2ddd86"
+		  	},
+		  	"push": {
+		  	    "sender_id": "749443376509",
+		  	    "pluginConfig":{
+		  		"ios": {
+		  		    "badge": true,
+		  		    "sound": true
+		  		},
+		  		"android": {
+		  		    "iconColor": "#343434"
+			  	}
+		  	    }
+		  	}
+		  });
 
-			$stateProvider
-			.state('login',{
-				url: '/login',
-				templateUrl: 'templates/login.html',
-				controller: 'LoginCtrl'
+		$stateProvider
+		.state('login',{
+			url: '/login',
+			templateUrl: 'templates/login.html',
+			controller: 'LoginCtrl'
+		})
+		.state('home',{
+			url: '/home',
+			templateUrl: 'templates/home.html',
+			controller: function($scope){
+			}
+		})
+		.state('client',{
+			abstract: true,
+			url: '/client',
+			templateUrl: 'templates/client/menu.html',
+			controller: 'ClientMenuCtrl'
+		})
+			.state('client.checkout', {
+				url: '/checkout',
+				templateUrl: 'templates/client/checkout.html',
+				controller: 'ClientCheckoutCtrl'
 			})
-			.state('home',{
-				url: '/home',
-				templateUrl: 'templates/home.html',
-				controller: function($scope){
-
-				}
+			.state('client.order', {
+				url: '/order',
+				templateUrl: 'templates/client/order.html',
+				controller: 'ClientOrderCtrl'
 			})
-			.state('client',{
-				abstract: true,
-				url: '/client',
-				templateUrl: 'templates/client/menu.html',
-				controller: 'ClientMenuCtrl'
+			.state('client.view_order', {
+				url: '/view_order/:id',
+				templateUrl: 'templates/client/view_order.html',
+				controller: 'ClientViewOrderCtrl'
 			})
-				.state('client.checkout', {
-					url: '/checkout',
-					templateUrl: 'templates/client/checkout.html',
-					controller: 'ClientCheckoutCtrl'
-				})
-				.state('client.order', {
-					url: '/order',
-					templateUrl: 'templates/client/order.html',
-					controller: 'ClientOrderCtrl'
-				})
-				.state('client.view_order', {
-					url: '/view_order/:id',
-					templateUrl: 'templates/client/view_order.html',
-					controller: 'ClientViewOrderCtrl'
-				})
-				.state('client.view_delivery', {
-					url: '/view_delivery/:id',
-					templateUrl: 'templates/client/view_delivery.html',
-					controller: 'ClientViewDeliveryCtrl'
-				})
-				.state('client.checkout_detail', {
-					url: '/checkout/details/:index',
-					templateUrl: 'templates/client/checkout_detail.html',
-					controller: 'ClientCheckoutDetailCtrl'
-				})
-				.state('client.checkout_successful', {
-					url: '/checkout/successful',
-					templateUrl: 'templates/client/checkout_successful.html',
-					controller: 'ClientCheckoutSuccessfullCtrl'
-				})
-				.state('client.view_products', {
-					url: '/view/products',
-					templateUrl: 'templates/client/view_products.html',
-					controller: 'ClientViewProductsCtrl'
-				})
-			.state('deliveryman', {
-				abstract: true,
-				url: '/deliveryman',
-				templateUrl: 'templates/deliveryman/menu.html',
-				controller: 'DeliveryManMenuCtrl'
+			.state('client.view_delivery', {
+				url: '/view_delivery/:id',
+				templateUrl: 'templates/client/view_delivery.html',
+				controller: 'ClientViewDeliveryCtrl'
 			})
-				.state('deliveryman.order', {
-					url: '/order',
-					templateUrl: 'templates/deliveryman/order.html',
-					controller: 'DeliveryManOrderCtrl'
-				})
-				.state('deliveryman.view_order', {
-					url: '/view_order/:id',
-					templateUrl: 'templates/deliveryman/view_order.html',
-					controller: 'DeliveryManViewOrderCtrl'
-				})
-			$urlRouterProvider.otherwise('/login');
-
+			.state('client.checkout_detail', {
+				url: '/checkout/details/:index',
+				templateUrl: 'templates/client/checkout_detail.html',
+				controller: 'ClientCheckoutDetailCtrl'
+			})
+			.state('client.checkout_successful', {
+				url: '/checkout/successful',
+				templateUrl: 'templates/client/checkout_successful.html',
+				controller: 'ClientCheckoutSuccessfullCtrl'
+			})
+			.state('client.view_products', {
+				url: '/view/products',
+				templateUrl: 'templates/client/view_products.html',
+				controller: 'ClientViewProductsCtrl'
+			})
+		.state('deliveryman', {
+			abstract: true,
+			url: '/deliveryman',
+			templateUrl: 'templates/deliveryman/menu.html',
+			controller: 'DeliveryManMenuCtrl'
+		})
+			.state('deliveryman.order', {
+				url: '/order',
+				templateUrl: 'templates/deliveryman/order.html',
+				controller: 'DeliveryManOrderCtrl'
+			})
+			.state('deliveryman.view_order', {
+				url: '/view_order/:id',
+				templateUrl: 'templates/deliveryman/view_order.html',
+				controller: 'DeliveryManViewOrderCtrl'
+			})
+		$urlRouterProvider.otherwise('/login');
 			$provide.decorator('OAuthToken', ['$localStorage', '$delegate', function($localStorage, $delegate){
-				Object.defineProperties($delegate, {
-					setToken: {
-						value: function(data){
-							return $localStorage.setObject('token', data);
-						},
-						enumerable:true,
-						configurable: true,
-						writable: true
+			Object.defineProperties($delegate, {
+				setToken: {
+					value: function(data){
+						return $localStorage.setObject('token', data);
 					},
-					getToken: {
-						value: function(){
-							return $localStorage.getObject('token');
-						},
-						enumerable:true,
-						configurable: true,
-						writable: true
+					enumerable:true,
+					configurable: true,
+					writable: true
+				},
+				getToken: {
+					value: function(){
+						return $localStorage.getObject('token');
 					},
-					removeToken: {
-						value: function(){
-							return $localStorage.setObject('token', null);
-						},
-						enumerable:true,
-						configurable: true,
-						writable: true
+					enumerable:true,
+					configurable: true,
+					writable: true
+				},
+				removeToken: {
+					value: function(){
+						return $localStorage.setObject('token', null);
 					},
-				});
-				return $delegate;
-			}]);
-
-		}])
+					enumerable:true,
+					configurable: true,
+					writable: true
+				},
+			});
+			return $delegate;
+		}]);
+	}])

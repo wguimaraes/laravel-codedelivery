@@ -1,15 +1,22 @@
 angular.module('starter.controllers')
 .controller('ClientViewDeliveryCtrl',
 ['$scope', '$stateParams', '$ionicLoading', 'ClientOrder', '$localStorage', '$ionicPopup', 'UserData',
- '$pusher', '$window', '$map',
+ '$pusher', '$window', '$map', 'uiGmapGoogleMapApi',
 function($scope, $stateParams, $ionicLoading, ClientOrder, $localStorage, $ionicPopup, UserData,
-		 $pusher, $window, $map){
+		 $pusher, $window, $map, uiGmapGoogleMapApi){
 	$scope.order = {};
 	$scope.map = $map;
 	$scope.markers = [];
 	$ionicLoading.show({
 		template: 'Carregando...'
 	});
+	
+	uiGmapGoogleMapApi.then(function(map){
+	    //Fazer alguma coisa quando a instância do google maps é totalmente carregada
+	}, function(){
+	  //Fazer alguma coisa quando ocorre erro ao carregar a instância do google maps
+	});
+	
 	ClientOrder.get({id: $stateParams.id, include: 'items,cupom'}, function(data){
 		$scope.order = data.data;
 		if($scope.order.status == 1){

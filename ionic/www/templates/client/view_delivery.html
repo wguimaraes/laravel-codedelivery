@@ -23,22 +23,23 @@
 		</ion-list>
 		<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
 			<ui-gmap-map-control template="button-descentralize.html" position="top-right"
-			controller="CvdControlDescentralize" index="-1">
-			<ui-gmap-marker template="button-reload.html" position="top-right"
-			controller="CvdControlReload" index="-1">
-			</ui-gmap-map-control>
+			controller="CvdControlDescentralize" index="-1"></ui-gmap-map-control>
+			<ui-gmap-map-control template="button-reload.html" position="top-right"
+			controller="CvdControlReload" index="-1"></ui-gmap-map-control>
 			<ui-gmap-markers models="markers" coords="'coords'" options="'options'" fit="map.fit">
 			</ui-gmap-markers>
 		</ui-gmap-google-map>
 	</ion-content>
-
-	<script id="button-descentralize.hml" type="text/ng-template">
-		<button class="button button-stable">
-			<i class="ion ion-android-bicycle"></i>
+	<script type="text/ng-template" id="control.tpl.html">
+        <button class="btn btn-sm btn-primary" ng-class="{'btn-warning': danger}" ng-click="controlClick()">{{controlText}}</button>
+    </script>
+	<script id="button-descentralize.html" type="text/ng-template">
+		<button class="button button-stable" ng-click="fit()">
+			<i class="ion" ng-class="{'ion-android-bicycle' : !map.fit, 'ion-stop': map.fit}"></i>
 		</button>
 	</script>
-	<script id="button-reload.hml" type="text/ng-template">
-		<button class="button button-stable">
+	<script id="button-reload.html" type="text/ng-template">
+		<button class="button button-stable" ng-click="reload()">
 			<i class="ion ion-refresh"></i>
 		</button>
 	</script>

@@ -1,15 +1,30 @@
 angular.module('starter.controllers')
-.controller('LoginCtrl', ['$scope', 'OAuth', 'OAuthToken', '$state', '$ionicPopup', 'UserData', 'User',
-function($scope, OAuth, OAuthToken, $state, $ionicPopup, UserData, User){
+.controller('LoginCtrl', ['$scope', 'OAuth', 'OAuthToken', '$state', '$ionicPopup', 'UserData', 'User', '$ionicPush', '$localStorage',
+function($scope, OAuth, OAuthToken, $state, $ionicPopup, UserData, User, $ionicPush, $localStorage){
 	$scope.user = {
 		username: '',
 		password: ''
 	};
 	
+	$ionicPush.register().then(function(t) {
+	    debugger;
+	    return $ionicPush.saveToken(t);
+	  }).then(function(t) {
+	      $localStorage.set('device_token', t.token);
+	  });
+	
+	$scope.$on('cloud:push:notification', function(event, data) {
+	    var msg = data.message;
+	    alert(msg.title + ': ' + msg.text);
+	  });
 	
 	$scope.login = function(){
 		var promise = OAuth.getAccessToken($scope.user);
 		promise
+			.then(
+			function(data){
+				return User.updateDeviceToken({}, {device_token: $localStorage.get('device_token')}).$promisse;
+			})
 			.then(
 			function(data){
 				return User.authenticated({include: 'client'}).$promise;
