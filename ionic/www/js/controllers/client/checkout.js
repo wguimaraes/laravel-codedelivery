@@ -80,6 +80,13 @@ function($scope, $state, $localStorage, $cart, $ionicLoading, $ionicPopup, $cord
 		});
 		var cupom = Cupom.get({code: code},function(data){
 			$ionicLoading.hide();
+			if(data.data.value > $cart.getTotal()){
+			    $ionicPopup.alert({
+				title: 'Advertência',
+				template: 'O valor do cupom é mais alto que o total da compra! Adicione mais ítens ao carrinho.'
+			    });
+			    return;
+			}
 			$cart.setCupom(data.data.code, data.data.value);
 			$scope.cupom = $cart.get().cupom;
 			$scope.total = $cart.getTotalFinal();
