@@ -27,6 +27,7 @@ class OrderTableSeeder extends Seeder
             $o->total = $product->price;
             switch($o->id){
                 case 1:
+                    $o->deliveryman_id = 3;
                     $o->client_id = 1;
                     break;
                 case 2:
