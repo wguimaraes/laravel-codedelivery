@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'ionic.cloud', 'angular-oauth2', 'ngResource
                            'starter.services', 'ngCordova', 'starter.filters', 'uiGmapgoogle-maps',
                            'pusher-angular'])
 .constant('appConfig', {
-	baseUrl: 'http://LB-CodeEducation-841747007.us-east-1.elb.amazonaws.com',
+	baseUrl: 'http://LB-CodeEducation-1583763813.us-east-1.elb.amazonaws.com',
 	pusherKey: '5dbe347d07d599a21b3a'
 })
 .run(function($ionicPlatform, $window, appConfig) {
