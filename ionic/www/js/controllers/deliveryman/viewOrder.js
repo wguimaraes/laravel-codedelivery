@@ -51,6 +51,20 @@ function($scope, $stateParams, $ionicLoading, DeliveryManOrder, $localStorage, $
 			console.log('Errou!');
 		});
 	}
+	
+	$scope.deliverOrder = function(order){
+	    DeliveryManOrder.updateStatus({id: order.id, status: 2}, function(data){
+		$ionicPopup.alert({
+			title: 'Aviso',
+			template: 'Entrega atualizada como entrege!'
+		});
+	    },function(errorResponse){
+		$ionicPopup.alert({
+			title: 'Aviso',
+			template: 'Erro ao atualizar o status da entrega!'
+		});
+	    });
+	}
 
 	function stopWatchPostion(){
 		if(watch && typeof watch == 'object' && watch.hasOwnProperty('watchID')){
